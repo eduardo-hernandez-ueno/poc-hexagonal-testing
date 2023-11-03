@@ -2,6 +2,7 @@ package com.example.infrastructure;
 
 import io.restassured.RestAssured;
 import jakarta.annotation.PostConstruct;
+import org.bson.BsonDocument;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
@@ -56,7 +57,7 @@ public abstract class ProductsBaseIT {
 
     @AfterEach
     void tierDown() {
-        mongoTemplate.getCollectionNames().forEach(s -> mongoTemplate.getCollection(s).drop());
+        mongoTemplate.getCollectionNames().forEach(s -> mongoTemplate.getCollection(s).deleteMany(BsonDocument.parse("{}")));
     }
 
 }

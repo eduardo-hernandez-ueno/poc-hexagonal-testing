@@ -7,12 +7,9 @@ import com.example.products.domain.Product;
 import com.example.products.domain.Tag;
 import com.example.products.exceptions.ProductAlreadyExistsException;
 
-import com.mongodb.MongoWriteException;
-import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.dao.DuplicateKeyException;
 import org.springframework.stereotype.Component;
 
-import java.util.Map;
 import java.util.Objects;
 import java.util.stream.Collectors;
 

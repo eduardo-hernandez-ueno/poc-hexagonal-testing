@@ -26,7 +26,7 @@ public class CreateProductUseCaseTest {
     CreateProductUseCase useCase = new CreateProductUseCaseImpl(productPort, List.of(amazonPort, ebayPort));
 
     @Test
-    void create_withValidProduct_returnProduct() {
+    void execute_withValidProduct_returnProduct() {
         Product p = new Product("123456", "My awesome Product", BigDecimal.TEN);
         when(productPort.create(p)).thenReturn(p);
 
@@ -37,7 +37,7 @@ public class CreateProductUseCaseTest {
     }
 
     @Test
-    void create_whenExistsTags_returnProductWithTags() {
+    void execute_whenExistsTags_returnProductWithTags() {
         Product p = new Product("123456", "My awesome Product", BigDecimal.TEN);
         when(amazonPort.get("123456")).thenReturn(CompletableFuture.completedFuture(List.of(new Tag("tag 1", "value 1"))));
         when(ebayPort.get("123456")).thenReturn(CompletableFuture.completedFuture(List.of(new Tag("tag 1", "value n", true), new Tag("tag 2", "value 2", true), new Tag("tag 3", "value 3", false))));
@@ -53,7 +53,7 @@ public class CreateProductUseCaseTest {
     }
 
     @Test
-    void create_whenATagPortFails_returnProductWithTags() {
+    void execute_whenATagPortFails_returnProductWithTags() {
         Product p = new Product("123456", "My awesome Product", BigDecimal.TEN);
         when(amazonPort.get("123456")).thenReturn(CompletableFuture.failedFuture(new TagsNotFoundException(new RuntimeException())));
         when(ebayPort.get("123456")).thenReturn(CompletableFuture.completedFuture(List.of(new Tag("tag 1", "value n", true), new Tag("tag 2", "value 2", true), new Tag("tag 3", "value 3", false))));
@@ -70,7 +70,7 @@ public class CreateProductUseCaseTest {
 
 
     @Test
-    void create_whenAllTagPortFails_returnProductWithTags() {
+    void execute_whenAllTagPortFails_returnProductWithTags() {
         Product p = new Product("123456", "My awesome Product", BigDecimal.TEN);
         when(amazonPort.get("123456")).thenReturn(CompletableFuture.failedFuture(new TagsNotFoundException(new RuntimeException())));
         when(ebayPort.get("123456")).thenReturn(CompletableFuture.failedFuture(new TagsNotFoundException(new RuntimeException())));
@@ -86,7 +86,7 @@ public class CreateProductUseCaseTest {
     }
 
     @Test
-    void create_whenPortThrowException_promoteException() {
+    void execute_whenPortThrowException_promoteException() {
         Product p = new Product("123456", "My awesome Product", BigDecimal.TEN);
         when(productPort.create(p)).thenThrow(RuntimeException.class);
 

@@ -40,40 +40,14 @@ public class ProductControllerIT extends ProductsBaseIT {
                            }
                         """);
     }
-
+    
     @Test
     void findByCode_whenNotExistsProduct_returnNotFound() {
-        long dbBefore = mongoTemplate.getCollection("products").countDocuments();
-        String responseBody = RestAssured
-                .given().body("""
-                             {
-                            "code": "123456",
-                            "name": "asd",
-                            "price": 10
-                           }
-                        """).and().contentType("application/json")
-                .when().post("/products")
+        RestAssured
+                .when().get("/products/{code}", "123456")
                 .then()
                 .assertThat()
-                .statusCode(201)
-                .extract().asPrettyString();
-
-        assertThatJson(responseBody)
-                .isEqualTo("""
-                           {
-                            "code": "123456",
-                            "name": "asd",
-                            "price": 10,
-                            "tags": {
-                                "tag1": "value1",
-                                "tag2": "value2"
-                            }
-                           }
-                        """);
-        long dbAfter = mongoTemplate.getCollection("products").countDocuments();
-        assertThat(dbBefore).isEqualTo(0);
-        assertThat(dbAfter).isEqualTo(1);
-
+                .statusCode(404);
     }
 
 
@@ -108,7 +82,8 @@ public class ProductControllerIT extends ProductsBaseIT {
                            }
                         """);
         long dbAfter = mongoTemplate.getCollection("products").countDocuments();
-        assertThat(dbBefore).isEqualTo(dbAfter);
+        assertThat(dbBefore).isEqualTo(0);
+        assertThat(dbAfter).isEqualTo(1);
     }
 
     @Test
