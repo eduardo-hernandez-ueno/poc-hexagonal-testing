@@ -1,0 +1,13 @@
+{
+  "request": {
+    "url": "/amazon/tags/123456",
+    "method": "GET"
+  },
+  "response": {
+    "status": "200",
+    "headers": {
+      "Content-Type": "application/json"
+    },
+    "body": "[{\"key\": \"tag1\", \"value\": \"value1\"}]"
+  }
+}
