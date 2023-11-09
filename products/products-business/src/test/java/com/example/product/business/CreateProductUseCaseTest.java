@@ -29,6 +29,9 @@ public class CreateProductUseCaseTest {
     void execute_withValidProduct_returnProduct() {
         Product p = new Product("123456", "My awesome Product", BigDecimal.TEN);
         when(productPort.create(p)).thenReturn(p);
+        when(amazonPort.get(any())).thenReturn(CompletableFuture.completedFuture(List.of()));
+        when(ebayPort.get(any())).thenReturn(CompletableFuture.completedFuture(List.of()));
+
 
         Product product = useCase.execute(p);
 
@@ -89,6 +92,9 @@ public class CreateProductUseCaseTest {
     void execute_whenPortThrowException_promoteException() {
         Product p = new Product("123456", "My awesome Product", BigDecimal.TEN);
         when(productPort.create(p)).thenThrow(RuntimeException.class);
+        when(amazonPort.get(any())).thenReturn(CompletableFuture.completedFuture(List.of()));
+        when(ebayPort.get(any())).thenReturn(CompletableFuture.completedFuture(List.of()));
+
 
         assertThatThrownBy(() -> useCase.execute(p))
                 .isInstanceOf(RuntimeException.class);
